@@ -25,10 +25,34 @@ def doei():
   ecr = 448 * ec
 
   total = err + ecr
-  totalCost = total * int(value)
-  totalCost = '{0:,}'.format(round(totalCost))
+  totalCost =  int(value) / total
+  totalCost = round(totalCost)
+  winst = int(value) - ( totalCost * total ) 
 
-  return render_template("resultaat.html", value=value, totalcost=totalCost)
+  totalRedstone = totalCost * 160
+  totalCobblestone = totalCost * 448
+  
+  totalPrice = '{0:,}'.format(round(err + ecr))
+  winst = '{0:,}'.format(round(winst))
+  totalCost = '{0:,}'.format(totalCost)
+  totalRedstone = '{0:,}'.format(round(totalRedstone))
+  totalCobblestone = '{0:,}'.format(round(totalCobblestone))
+  err = '{0:,}'.format(round(err))
+  ecr = '{0:,}'.format(round(ecr))
+  
+
+  return render_template(
+    "resultaat.html",
+    ec=ec, 
+    er=er, 
+    totalcost=totalCost, 
+    winst=winst, 
+    err=err, 
+    ecr=ecr, 
+    totalPrice=totalPrice,
+    totalRedstone=totalRedstone,
+    totalCobblestone=totalCobblestone,
+  )
 
 if __name__ == "__main__":
   app.run(debug=True)
