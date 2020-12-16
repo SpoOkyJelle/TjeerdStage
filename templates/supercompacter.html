@@ -12,14 +12,9 @@
 
     <div class="bg-image">  </div>
     <div class="bg-text">
-        <h2>Totalcost:</h2>
-        <p>{{ totalcost }}</p>
-
-        <!-- <div class="bouwkosten mt-5">
-            <h4>Bouwkosten</h4>
-            <p>Echanted redstone: {{ ecr }} {{ totalRedstone }}</p>
-            <p>Echanted cobblestone: {{ err }} {{ totalCobblestone }}</p>
-        </div> -->
+        <h2>Totalamount:</h2>
+        <p>{{ scA }}</p>
+        
         <div>
             <table class="table">
                 <thead>
@@ -33,21 +28,21 @@
                 <tbody>
                   <tr>
                     <th scope="row">aantal</th>
-                    <td>{{ totalRedstone }}</td>
-                    <td>{{ totalCobblestone }}</td>
+                    <td>{{ erA }}</td>
+                    <td>{{ ecA }}</td>
                     <td>#</td>
                   </tr>
                   <tr>
                     <th scope="row">price</th>
-                    <td>{{ err }}</td>
-                    <td>{{ ecr }}</td>
-                    <td>{{ totalPrice }}</td>
+                    <td>{{ EnchantedRedstonePrice }}</td>
+                    <td>{{ EnchantedCobblestonePrice }}</td>
+                    <td>{{ ecerTotalPrice }}</td>
                   </tr>
                   <tr>
                     <th scope="row">winst</th>
                     <td>#</td>
                     <td>#</td>
-                    <td>{{ winst }}</td>
+                    <td>{{ SupercompacterW }}</td>
                   </tr>
                 </tbody>
               </table>

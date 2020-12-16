@@ -35,3 +35,8 @@
 table{
   color: #fff !important;
 }
+
+input{
+  color: #fff;
+  background: transparent;
+}

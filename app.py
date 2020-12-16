@@ -5,8 +5,12 @@ app = Flask(__name__)
 
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
 if response.status_code != 404:
-  er = response.json()['products']['ENCHANTED_REDSTONE']['quick_status']['buyPrice']
-  ec = response.json()['products']['ENCHANTED_COBBLESTONE']['quick_status']['buyPrice']
+  erAPI = response.json()['products']['ENCHANTED_REDSTONE']['quick_status']['buyPrice']
+  ecAPI = response.json()['products']['ENCHANTED_COBBLESTONE']['quick_status']['buyPrice']
+  ecbAPI = response.json()['products']['ENCHANTED_COAL_BLOCK']['quick_status']['buyPrice']
+  eiiAPI = response.json()['products']['ENCHANTED_IRON']['quick_status']['buyPrice']
+  egAPI = response.json()['products']['ENCHANTED_GLOWSTONE_DUST']['quick_status']['buyPrice']
+
     
 else:
   print('Error!')
@@ -16,43 +20,122 @@ else:
 def hello():
   return render_template("index.html")
 
-@app.route("/verwerken", methods=['post'])
-def doei():
+@app.route("/verwerken_lava_bucket", methods=['post'])
+def lavabucket():
+  value = request.form['naam']
+
+  EnchantedCoalBlockPrice = 2 * ecbAPI
+  EnchantedIronPrice = 3 * eiiAPI
+
+  ecbeiiTotalPrice = EnchantedCoalBlockPrice + EnchantedIronPrice
+  lbA =  int(value) / ecbeiiTotalPrice
+  lbA = round(lbA)
+  LavaBucketW = int(value) - ( lbA * ecbeiiTotalPrice ) 
+
+  ecbA = lbA * 2
+  eiiA = lbA * 3
+  
+  ecbeiiTotalPrice = '{0:,}'.format(round(EnchantedCoalBlockPrice + EnchantedIronPrice))
+  LavaBucketW = '{0:,}'.format(round(LavaBucketW))
+  lbA = '{0:,}'.format(lbA)
+  ecbA = '{0:,}'.format(round(ecbA))
+  eiiA = '{0:,}'.format(round(eiiA))
+  EnchantedCoalBlockPrice = '{0:,}'.format(round(EnchantedCoalBlockPrice))
+  EnchantedIronPrice = '{0:,}'.format(round(EnchantedIronPrice))
+
+  return render_template(
+    "lavabucket.html",
+    ecbA=ecbA,
+    eiiA=eiiA,
+    LavaBucketW=LavaBucketW,
+    ecbAPI=ecbAPI,
+    eiiAPI=eiiAPI,
+    ecbeiiTotalPrice=ecbeiiTotalPrice,
+    EnchantedCoalBlockPrice=EnchantedCoalBlockPrice,
+    EnchantedIronPrice=EnchantedIronPrice,
+    lbA=lbA,
+
+    )
+
+
+
+@app.route("/verwerken_super_compacter_3000", methods=['post'])
+def compacter3000():
   value = request.form['naam']
 
 
-  err = 160 * er
-  ecr = 448 * ec
+  EnchantedRedstonePrice = 160 * erAPI
+  EnchantedCobblestonePrice = 448 * ecAPI
 
-  total = err + ecr
-  totalCost =  int(value) / total
-  totalCost = round(totalCost)
-  winst = int(value) - ( totalCost * total ) 
+  ecerTotal = EnchantedRedstonePrice + EnchantedCobblestonePrice
+  scA =  int(value) / ecerTotal
+  scA = round(scA)
+  SupercompacterW = int(value) - ( scA * ecerTotal ) 
 
-  totalRedstone = totalCost * 160
-  totalCobblestone = totalCost * 448
+  erA = scA * 160
+  ecA = scA * 448
   
-  totalPrice = '{0:,}'.format(round(err + ecr))
-  winst = '{0:,}'.format(round(winst))
-  totalCost = '{0:,}'.format(totalCost)
-  totalRedstone = '{0:,}'.format(round(totalRedstone))
-  totalCobblestone = '{0:,}'.format(round(totalCobblestone))
-  err = '{0:,}'.format(round(err))
-  ecr = '{0:,}'.format(round(ecr))
+  ecerTotalPrice = '{0:,}'.format(round(EnchantedRedstonePrice + EnchantedCobblestonePrice))
+  SupercompacterW = '{0:,}'.format(round(SupercompacterW))
+  scA = '{0:,}'.format(scA)
+  erA = '{0:,}'.format(round(erA))
+  ecA = '{0:,}'.format(round(ecA))
+  EnchantedRedstonePrice = '{0:,}'.format(round(EnchantedRedstonePrice))
+  EnchantedCobblestonePrice = '{0:,}'.format(round(EnchantedCobblestonePrice))
   
 
   return render_template(
-    "resultaat.html",
-    ec=ec, 
-    er=er, 
-    totalcost=totalCost, 
-    winst=winst, 
-    err=err, 
-    ecr=ecr, 
-    totalPrice=totalPrice,
-    totalRedstone=totalRedstone,
-    totalCobblestone=totalCobblestone,
+    "supercompacter.html",
+    ecAPI=ecAPI, 
+    erAPI=erAPI, 
+    scA=scA, 
+    SupercompacterW=SupercompacterW, 
+    EnchantedRedstonePrice=EnchantedRedstonePrice, 
+    EnchantedCobblestonePrice=EnchantedCobblestonePrice, 
+    ecerTotalPrice=ecerTotalPrice,
+    erA=erA,
+    ecA=ecA,
   )
+
+
+@app.route("/verwerken_redstone_lamp", methods=['post'])
+def Redstonelamp():
+
+  value = request.form['naam']
+
+  EnchantedRedstone = 128 * erAPI
+  EnchantedGlowstone = 32 * egAPI
+
+  eregTotalPrice = EnchantedRedstone + EnchantedGlowstone
+  rlA =  int(value) / eregTotalPrice
+  rlA = round(rlA)
+  RedstonelampW = int(value) - ( rlA * eregTotalPrice ) 
+
+  erA = rlA * 128
+  egA = rlA * 32
+  
+  eregTotalPrice = '{0:,}'.format(round(EnchantedRedstone + EnchantedGlowstone))
+  RedstonelampW = '{0:,}'.format(round(RedstonelampW))
+  rlA = '{0:,}'.format(rlA)
+  erA = '{0:,}'.format(round(erA))
+  egA = '{0:,}'.format(round(egA))
+  EnchantedRedstone = '{0:,}'.format(round(EnchantedRedstone))
+  EnchantedGlowstone = '{0:,}'.format(round(EnchantedGlowstone))
+
+  return render_template(
+    "redstonelamp.html",
+    eregTotalPrice=eregTotalPrice,
+    rlA=rlA,
+    erA=erA,
+    egA=egA,
+    RedstonelampW=RedstonelampW,
+    EnchantedRedstone=EnchantedRedstone,
+    EnchantedGlowstone=EnchantedGlowstone,
+    erAPI=erAPI,
+    egAPI=egAPI,
+    )
 
 if __name__ == "__main__":
   app.run(debug=True)
+
+
