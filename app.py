@@ -5,20 +5,41 @@ app = Flask(__name__)
 
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
 if response.status_code != 404:
-  erAPI = response.json()['products']['ENCHANTED_REDSTONE']['quick_status']['buyPrice']
-  ecAPI = response.json()['products']['ENCHANTED_COBBLESTONE']['quick_status']['buyPrice']
-  ecbAPI = response.json()['products']['ENCHANTED_COAL_BLOCK']['quick_status']['buyPrice']
-  eiiAPI = response.json()['products']['ENCHANTED_IRON']['quick_status']['buyPrice']
-  egAPI = response.json()['products']['ENCHANTED_GLOWSTONE_DUST']['quick_status']['buyPrice']
+  erAPI = response.json()['products']['ENCHANTED_REDSTONE']['quick_status']['sellPrice']
+  ecAPI = response.json()['products']['ENCHANTED_COBBLESTONE']['quick_status']['sellPrice']
+  ecbAPI = response.json()['products']['ENCHANTED_COAL_BLOCK']['quick_status']['sellPrice']
+  eiiAPI = response.json()['products']['ENCHANTED_IRON']['quick_status']['sellPrice']
+  egAPI = response.json()['products']['ENCHANTED_GLOWSTONE_DUST']['quick_status']['sellPrice']
+  lavaBucket = response.json()['products']['ENCHANTED_LAVA_BUCKET']['quick_status']['buyPrice']
+  superCompacter = response.json()['products']['SUPER_COMPACTOR_3000']['quick_status']['buyPrice']
+  redstoneLamp = response.json()['products']['ENCHANTED_REDSTONE_LAMP']['quick_status']['buyPrice']
+
 
     
 else:
   print('Error!')
 
+def lavabucketWinst():
+  temp = ((ecbAPI * 2) + (eiiAPI * 3))
+  print(temp - lavaBucket)
+  return round(lavaBucket- ((ecbAPI * 2) + (eiiAPI * 3)))
+
+def supercompacterWinst():
+  return round(superCompacter - ((erAPI * 160) + (ecAPI * 448)))
+
+def redstoneLampWinst():
+  return round(redstoneLamp - ((erAPI * 128) + (egAPI * 32)))
+  
+
+
 
 @app.route("/")
 def hello():
-  return render_template("index.html")
+  return render_template("index.html", 
+  winstLavaBucket=lavabucketWinst(),
+  winstSuperCompacter=supercompacterWinst(),
+  winstRedstoneLamp=redstoneLampWinst(),
+  )  
 
 @app.route("/verwerken_lava_bucket", methods=['post'])
 def lavabucket():
