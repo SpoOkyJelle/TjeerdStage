@@ -30,7 +30,19 @@
     padding: 20px;
     text-align: center;
   }
-
+  
+  .bottom{
+    color: #cc7408;
+    font-weight: bold;
+    position: absolute;
+    z-index: 5;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    padding: 20px;
+    text-align: center;
+  }
 
 table{
   color: #fff !important;
@@ -38,5 +50,5 @@ table{
 
 input{
   color: #fff;
-  background: transparent;
+  background: #000000a6;
 }
