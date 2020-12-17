@@ -5,30 +5,29 @@ app = Flask(__name__)
 
 response = requests.get("https://api.hypixel.net/skyblock/bazaar")
 if response.status_code != 404:
-  erAPI = response.json()['products']['ENCHANTED_REDSTONE']['quick_status']['sellPrice']
-  ecAPI = response.json()['products']['ENCHANTED_COBBLESTONE']['quick_status']['sellPrice']
-  ecbAPI = response.json()['products']['ENCHANTED_COAL_BLOCK']['quick_status']['sellPrice']
-  eiiAPI = response.json()['products']['ENCHANTED_IRON']['quick_status']['sellPrice']
-  egAPI = response.json()['products']['ENCHANTED_GLOWSTONE_DUST']['quick_status']['sellPrice']
-  lavaBucket = response.json()['products']['ENCHANTED_LAVA_BUCKET']['quick_status']['buyPrice']
-  superCompacter = response.json()['products']['SUPER_COMPACTOR_3000']['quick_status']['buyPrice']
-  redstoneLamp = response.json()['products']['ENCHANTED_REDSTONE_LAMP']['quick_status']['buyPrice']
+  erAPI = response.json()['products']['ENCHANTED_REDSTONE']['sell_summary'][0]['pricePerUnit']
+  ecAPI = response.json()['products']['ENCHANTED_COBBLESTONE']['sell_summary'][0]['pricePerUnit']
+  ecbAPI = response.json()['products']['ENCHANTED_COAL_BLOCK']['sell_summary'][0]['pricePerUnit']
+  eiiAPI = response.json()['products']['ENCHANTED_IRON']['sell_summary'][0]['pricePerUnit']
+  egAPI = response.json()['products']['ENCHANTED_GLOWSTONE_DUST']['sell_summary'][0]['pricePerUnit']
+  
+  lavaBucket = response.json()['products']['ENCHANTED_LAVA_BUCKET']['buy_summary'][0]['pricePerUnit']
+  superCompacter = response.json()['products']['SUPER_COMPACTOR_3000']['buy_summary'][0]['pricePerUnit']
+  redstoneLamp = response.json()['products']['ENCHANTED_REDSTONE_LAMP']['buy_summary'][0]['pricePerUnit']
 
 
     
 else:
   print('Error!')
 
-def lavabucketWinst():
-  temp = ((ecbAPI * 2) + (eiiAPI * 3))
-  print(temp - lavaBucket)
-  return round(lavaBucket- ((ecbAPI * 2) + (eiiAPI * 3)))
+def lavabucketWinst(amount):
+  return round(amount * (lavaBucket - ((ecbAPI * 2) + (eiiAPI * 3))) )
 
-def supercompacterWinst():
-  return round(superCompacter - ((erAPI * 160) + (ecAPI * 448)))
+def supercompacterWinst(amount):
+  return round(amount * (superCompacter - ((erAPI * 160) + (ecAPI * 448))) )
 
-def redstoneLampWinst():
-  return round(redstoneLamp - ((erAPI * 128) + (egAPI * 32)))
+def redstoneLampWinst(amount):
+  return round(amount * (redstoneLamp - ((erAPI * 128) + (egAPI * 32))) )
   
 
 
@@ -36,9 +35,9 @@ def redstoneLampWinst():
 @app.route("/")
 def hello():
   return render_template("index.html", 
-  winstLavaBucket=lavabucketWinst(),
-  winstSuperCompacter=supercompacterWinst(),
-  winstRedstoneLamp=redstoneLampWinst(),
+  winstLavaBucket='{0:,}'.format(lavabucketWinst(1)),
+  winstSuperCompacter='{0:,}'.format(supercompacterWinst(1)),
+  winstRedstoneLamp='{0:,}'.format(redstoneLampWinst(1)),
   )  
 
 @app.route("/verwerken_lava_bucket", methods=['post'])
@@ -51,32 +50,23 @@ def lavabucket():
   ecbeiiTotalPrice = EnchantedCoalBlockPrice + EnchantedIronPrice
   lbA =  int(value) / ecbeiiTotalPrice
   lbA = round(lbA)
-  LavaBucketW = int(value) - ( lbA * ecbeiiTotalPrice ) 
 
   ecbA = lbA * 2
   eiiA = lbA * 3
   
-  ecbeiiTotalPrice = '{0:,}'.format(round(EnchantedCoalBlockPrice + EnchantedIronPrice))
-  LavaBucketW = '{0:,}'.format(round(LavaBucketW))
-  lbA = '{0:,}'.format(lbA)
-  ecbA = '{0:,}'.format(round(ecbA))
-  eiiA = '{0:,}'.format(round(eiiA))
-  EnchantedCoalBlockPrice = '{0:,}'.format(round(EnchantedCoalBlockPrice))
-  EnchantedIronPrice = '{0:,}'.format(round(EnchantedIronPrice))
-
   return render_template(
     "lavabucket.html",
-    ecbA=ecbA,
+    ecbA='{0:,}'.format(round(ecbA)),
     eiiA=eiiA,
-    LavaBucketW=LavaBucketW,
+    LavaBucketW='{0:,}'.format(round( lavabucketWinst(int(lbA)) )),
     ecbAPI=ecbAPI,
-    eiiAPI=eiiAPI,
-    ecbeiiTotalPrice=ecbeiiTotalPrice,
-    EnchantedCoalBlockPrice=EnchantedCoalBlockPrice,
-    EnchantedIronPrice=EnchantedIronPrice,
+    eiiAPI='{0:,}'.format(round(eiiA)),
+    ecbeiiTotalPrice='{0:,}'.format(round(EnchantedCoalBlockPrice + EnchantedIronPrice)),
+    EnchantedCoalBlockPrice='{0:,}'.format(round(EnchantedCoalBlockPrice)),
+    EnchantedIronPrice='{0:,}'.format(round(EnchantedIronPrice)),
     lbA=lbA,
 
-    )
+  )
 
 
 
@@ -97,7 +87,7 @@ def compacter3000():
   ecA = scA * 448
   
   ecerTotalPrice = '{0:,}'.format(round(EnchantedRedstonePrice + EnchantedCobblestonePrice))
-  SupercompacterW = '{0:,}'.format(round(SupercompacterW))
+  SupercompacterW = '{0:,}'.format(round( supercompacterWinst(scA) ))
   scA = '{0:,}'.format(scA)
   erA = '{0:,}'.format(round(erA))
   ecA = '{0:,}'.format(round(ecA))
@@ -136,7 +126,7 @@ def Redstonelamp():
   egA = rlA * 32
   
   eregTotalPrice = '{0:,}'.format(round(EnchantedRedstone + EnchantedGlowstone))
-  RedstonelampW = '{0:,}'.format(round(RedstonelampW))
+  RedstonelampW = '{0:,}'.format(round( redstoneLampWinst(rlA) ))
   rlA = '{0:,}'.format(rlA)
   erA = '{0:,}'.format(round(erA))
   egA = '{0:,}'.format(round(egA))
