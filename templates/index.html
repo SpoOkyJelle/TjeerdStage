@@ -12,40 +12,53 @@
 <body>
     <div class="bg-image">  </div>
 
-    <div class="bg-text row">
-        <div class="col-md-4">
-            <h3>Super Compacter 3000</h3>
-            <p>profit: {{ winstSuperCompacter }}</p>
-            <form class="mt-4" action="/verwerken_super_compacter_3000" method="post">
-                <label for="Input"></label>
-                <input name="naam" type="number" min="0">
-                <input type="submit">
-            </form>
+    <div class="bg-text">
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Super Compacter 3000</h3>
+                <p>profit: {{ winstSuperCompacter }}</p>
+                <form class="mt-4" action="/verwerken_super_compacter_3000" method="post">
+                    <label for="Input"></label>
+                    <input name="naam" type="number" min="0">
+                    <input type="submit">
+                </form>
+            </div>
+    
+            <div class="col-md-4">
+                <h3>Lava Bucket</h3>
+                <p>profit: {{ winstLavaBucket }}</p>
+                <form class="mt-4" action="/verwerken_lava_bucket" method="post">
+                    <label for="Input"></label>
+                    <input name="naam" type="number" min="0">
+                    <input type="submit">
+                </form>
+            </div>
+    
+            <div class="col-md-4">
+                <h3>RedstoneLamp</h3>
+                <p>profit: {{ winstRedstoneLamp }}</p>
+                <form class="mt-4" action="/verwerken_redstone_lamp" method="post">
+                    <label for="Input"></label>
+                    <input name="naam" type="number" min="0">
+                    <input type="submit">
+                </form>
+            </div>
         </div>
 
-        <div class="col-md-4">
-            <h3>Lava Bucket</h3>
-            <p>profit: {{ winstLavaBucket }}</p>
-            <form class="mt-4" action="/verwerken_lava_bucket" method="post">
-                <label for="Input"></label>
-                <input name="naam" type="number" min="0">
-                <input type="submit">
-            </form>
+        <div class="row mt-5">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <h3>RedstoneBlock</h3>
+                <p>profit: {{ winstRedstoneBlock }}</p>
+                <form class="mt-4" action="/verwerken_redstone_block" method="post">
+                    <label for="Input"></label>
+                    <input name="naam" type="number" min="0">
+                    <input type="submit">
+                </form>
+            </div>
+            <div class="col-md-4"></div>
         </div>
-
-        <div class="col-md-4">
-            <h3>RedstoneLamp</h3>
-            <p>profit: {{ winstRedstoneLamp }}</p>
-            <form class="mt-4" action="/verwerken_redstone_lamp" method="post">
-                <label for="Input"></label>
-                <input name="naam" type="number" min="0">
-                <input type="submit">
-            </form>
-        </div>
-
-        <div class="col-md-4">
-            
-        </div>
+      
     </div>
 
        

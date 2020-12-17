@@ -18,7 +18,7 @@ if response.status_code != 404:
     totalRedstone = eRedstone * 160
     
     totalCost = totalCobble + totalRedstone
-    print(lavaBucket - totalCost)
+    print(160 * 41)
   
   
   

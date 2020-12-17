@@ -14,6 +14,7 @@ if response.status_code != 404:
   lavaBucket = response.json()['products']['ENCHANTED_LAVA_BUCKET']['buy_summary'][0]['pricePerUnit']
   superCompacter = response.json()['products']['SUPER_COMPACTOR_3000']['buy_summary'][0]['pricePerUnit']
   redstoneLamp = response.json()['products']['ENCHANTED_REDSTONE_LAMP']['buy_summary'][0]['pricePerUnit']
+  redstoneBlock = response.json()['products']['ENCHANTED_REDSTONE_BLOCK']['buy_summary'][0]['pricePerUnit']
 
 
     
@@ -28,6 +29,9 @@ def supercompacterWinst(amount):
 
 def redstoneLampWinst(amount):
   return round(amount * (redstoneLamp - ((erAPI * 128) + (egAPI * 32))) )
+
+def redstoneBlockWinst(amount):
+  return round(amount * (redstoneBlock - (erAPI * 160)))
   
 
 
@@ -38,7 +42,27 @@ def hello():
   winstLavaBucket='{0:,}'.format(lavabucketWinst(1)),
   winstSuperCompacter='{0:,}'.format(supercompacterWinst(1)),
   winstRedstoneLamp='{0:,}'.format(redstoneLampWinst(1)),
+  winstRedstoneBlock='{0:,}'.format(redstoneBlockWinst(1)),
   )  
+
+@app.route("/verwerken_redstone_block", methods=['post'])
+def redstoneblock():
+  value = request.form['naam']
+
+  EnchantedRedstonePrice = 160 * erAPI
+
+  rbA = int(value) / EnchantedRedstonePrice
+  rbA = round(rbA)
+  erTotal = rbA * 160
+  print(EnchantedRedstonePrice)
+
+  return render_template(
+    "redstoneblock.html",
+    EnchantedRedstonePrice='{0:,}'.format(round(EnchantedRedstonePrice)),
+    rbA = rbA,
+    redstoneBlockWinst='{0:,}'.format(round( redstoneBlockWinst(int(rbA)) )), 
+    erTotal='{0:,}'.format(round(erTotal)),
+  )
 
 @app.route("/verwerken_lava_bucket", methods=['post'])
 def lavabucket():
